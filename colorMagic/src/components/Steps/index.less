@@ -1,0 +1,24 @@
+.transformNode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform;
+  animation-play-state: paused;
+  // animation: move 12s linear infinite normal;
+  // transform: translateY(-144px);
+
+}
+.transformItem {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+}
+
+@keyframes move {
+  0% {
+
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
