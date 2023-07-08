@@ -4,12 +4,6 @@ import { useContext } from 'react';
 import { Button, Select, Form, Input, InputNumber } from 'antd';
 import uuid from '@/utils/uuid';
 
-const typeMap = {
-  A: 'jsx2',
-  B: 'jsx2',
-  root: 'jsx1',
-};
-
 const ChartForm: React.FC = () => {
   const context = useContext(AppContext);
   const form = useRef<any>(null);
@@ -24,10 +18,6 @@ const ChartForm: React.FC = () => {
       },
     );
   };
-  const getGroup = () => {
-    const cache = new Set([...context?.data?.nodes].map((item) => item.group));
-    return [...cache].map((item) => ({ value: typeMap[item], label: item }));
-  };
   const onFinish = (values: any) => {
     const id = uuid();
     context.onAdd(
@@ -39,19 +29,20 @@ const ChartForm: React.FC = () => {
         description: values?.description,
         cpuUsage: values?.cpuUsage,
         status: values?.status,
+        group: values?.group,
         color: '#2196f3',
         meta: {
           creatorName: values?.creatorName,
         },
       },
-    ['root'].includes(type) ? false : {
-        source: id,
-        target: values?.originNode,
-      },
+      ['root'].includes(type)
+        ? false
+        : {
+            source: id,
+            target: values?.originNode,
+          },
     );
   };
-
-  const onFinishFailed = (errorInfo: any) => {};
   return (
     <Form
       name="basic"
@@ -60,7 +51,6 @@ const ChartForm: React.FC = () => {
       style={{ maxWidth: 300 }}
       initialValues={{ remember: true }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       autoComplete="off"
       ref={form}
     >
@@ -78,33 +68,50 @@ const ChartForm: React.FC = () => {
         <Input />
       </Form.Item>
       <Form.Item
-        label="聚类分组"
+        label="类型"
         name="type"
-        rules={[{ required: true, message: '请选择聚类分组' }]}
+        rules={[{ required: true, message: '请选择类型' }]}
       >
         <Select
           onChange={(e: any) => {
             setType(e);
           }}
-          options={getGroup()}
+          options={[
+            { value: 'jsx1', label: '类型一' },
+            { value: 'jsx2', label: '类型二' },
+          ]}
         />
       </Form.Item>
 
       <Form.Item label="cpu使用率" name="cpuUsage" hidden={type !== 'jsx1'}>
         <InputNumber max={100} min={1} step={1} />
       </Form.Item>
-      <Form.Item label="状态" name="status" hidden={type !== 'jsx1'}>
+      <Form.Item label="状态" name="status" hidden={type !== 'jsx1'}  rules={[{ required: true, message: '请填写状态' }]}>
         <Input />
       </Form.Item>
-      <Form.Item label="机器码" name="metric" hidden={type !== 'jsx1'}>
+      <Form.Item label="机器编码" name="metric" hidden={type !== 'jsx1'}  rules={[{ required: true, message: '请填写机器编码' }]}>
         <Input />
       </Form.Item>
       <Form.Item label="创建者" name="creatorName" hidden={type !== 'jsx2'}>
         <Input />
       </Form.Item>
 
-      <Form.Item label="描述" name="description" hidden={type !== 'jsx2'}>
+      <Form.Item label="描述" name="description" hidden={type !== 'jsx2'}  rules={[{ required: true, message: '请填写描述' }]}>
         <Input.TextArea rows={4} maxLength={8} />
+      </Form.Item>
+      <Form.Item
+        label="聚类分组"
+        name="group"
+        rules={[{ required: true, message: '请选择聚类分组' }]}
+      >
+        <Select
+          options={[
+            { value: 'A', label: '聚类A' },
+            { value: 'B', label: '聚类B' },
+            { value: 'C', label: '聚类C' },
+            { value: 'D', label: '聚类D' },
+          ]}
+        />
       </Form.Item>
       <Form.Item
         label="来源节点"
