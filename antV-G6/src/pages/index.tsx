@@ -25,7 +25,7 @@ export default function IndexPage() {
         id: '一号机',
         // type: 'xml-card',
         // type: 'circle',
-        type: 'jsx1',
+        type: 'jsx3',
         metric: 'CPU usage',
         label: '一号机房',
         description: 'ant_type_name...',
@@ -36,7 +36,7 @@ export default function IndexPage() {
       },
       {
         id: '二号机',
-        type: 'jsx1',
+        type: 'jsx3',
         // type: 'xml-card',
         group: 'root',
         metric: 'CPU usage',

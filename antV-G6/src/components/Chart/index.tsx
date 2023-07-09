@@ -23,7 +23,8 @@ const Chart = forwardRef(
     const [plugins, setPlugins] = useState<any[]>([]);
     //  类型一
     G6.registerNode('jsx1', {
-      jsx: (cfg: any) => `
+      jsx: (cfg: any) =>
+   `
   <rect style={{
     width: 100,
     height: 100,
@@ -137,6 +138,27 @@ const Chart = forwardRef(
           },
         );
       },
+    });
+    G6.registerNode('jsx3', {
+      jsx: (cfg: any) =>  `
+      <rect style={{
+        width: 100,
+        height: 36,
+        fill: '#1890ff',
+        radius: 6
+      }}>
+      <text style={{
+        fill: '#fff',
+        textAlign: 'center',
+        textBaseLine: 'middle',
+        marginTop: 24,
+        marginLeft: 24,
+        fontWeight: 'bold'
+      }}>
+       ${cfg.label}
+      </text>
+      </rect>`,
+
     });
     const tooltip = new G6.Tooltip({
       offsetX: 10,

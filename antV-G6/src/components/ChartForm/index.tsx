@@ -10,6 +10,7 @@ const ChartForm: React.FC = () => {
   const [type, setType] = useState('');
   const [group, setGroup] = useState('');
   const isRoot = ['root'].includes(group);
+  const isEmpty = context?.data?.nodes?.lenth === 0;
   const isType1 = type === 'jsx1';
   const isType2 = type === 'jsx2';
 
@@ -29,7 +30,7 @@ const ChartForm: React.FC = () => {
       {
         id,
         label: values.name,
-        type: values.type,
+        type: isRoot? 'jsx3' : values.type,
         metric: values.metric,
         description: values?.description,
         cpuUsage: values?.cpuUsage,
@@ -85,7 +86,7 @@ const ChartForm: React.FC = () => {
           }}
           options={[
             { value: 'root', label: '机房' },
-            { value: 'node', label: '机器' },
+            { value: 'node', label: '机器' , disabled: isEmpty},
           ]}
         />
       </Form.Item>
@@ -93,6 +94,7 @@ const ChartForm: React.FC = () => {
         label="聚类"
         name="type"
         rules={[{ required: !isRoot, message: '请选择聚类分组' }]}
+        hidden={isRoot}
       >
         <Select
           onChange={(e: any) => {
@@ -125,8 +127,8 @@ const ChartForm: React.FC = () => {
       <Form.Item
         label="来源节点"
         name="originNode"
-        hidden={isRoot}
-        rules={[{ required: !isRoot, message: '请选择来源节点' }]}
+        hidden={isRoot || isEmpty}
+        rules={[{ required: !isRoot || isEmpty, message: '请选择来源节点' }]}
       >
         <Select placeholder="" allowClear options={getOriginNodeOptions()} />
       </Form.Item>
