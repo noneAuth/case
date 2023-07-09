@@ -52,10 +52,6 @@ const ChartForm: React.FC = () => {
       initialValues={{ remember: true }}
       onFinish={onFinish}
       autoComplete="off"
-      onFinishFailed={(err) => {
-        console.log(err);
-
-      }}
       ref={form}
     >
       <Form.Item
