@@ -24,7 +24,7 @@ const TipsText = () => {
     return () => {};
   }, [edges]);
   return (
-    <Descriptions title="机器资源概览" style={{ paddingLeft: '24px' }}>
+    <Descriptions title="图表数据" style={{ paddingLeft: '24px' }}>
       <Descriptions.Item label="">
         <Space>
           <span>节点:</span>
