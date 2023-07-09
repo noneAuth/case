@@ -52,6 +52,10 @@ const ChartForm: React.FC = () => {
       initialValues={{ remember: true }}
       onFinish={onFinish}
       autoComplete="off"
+      onFinishFailed={(err) => {
+        console.log(err);
+
+      }}
       ref={form}
     >
       <Form.Item
@@ -77,8 +81,8 @@ const ChartForm: React.FC = () => {
             setType(e);
           }}
           options={[
-            { value: 'jsx1', label: '类型一' },
-            { value: 'jsx2', label: '类型二' },
+            { value: 'jsx1', label: '机房' },
+            { value: 'jsx2', label: '机器' },
           ]}
         />
       </Form.Item>
@@ -86,17 +90,17 @@ const ChartForm: React.FC = () => {
       <Form.Item label="cpu使用率" name="cpuUsage" hidden={type !== 'jsx1'}>
         <InputNumber max={100} min={1} step={1} />
       </Form.Item>
-      <Form.Item label="状态" name="status" hidden={type !== 'jsx1'}  rules={[{ required: true, message: '请填写状态' }]}>
+      <Form.Item label="状态" name="status" hidden={type !== 'jsx1'}  >
         <Input />
       </Form.Item>
-      <Form.Item label="机器编码" name="metric" hidden={type !== 'jsx1'}  rules={[{ required: true, message: '请填写机器编码' }]}>
+      <Form.Item label="机器编码" name="metric" hidden={type !== 'jsx1'} >
         <Input />
       </Form.Item>
       <Form.Item label="创建者" name="creatorName" hidden={type !== 'jsx2'}>
         <Input />
       </Form.Item>
 
-      <Form.Item label="描述" name="description" hidden={type !== 'jsx2'}  rules={[{ required: true, message: '请填写描述' }]}>
+      <Form.Item label="描述" name="description" hidden={type !== 'jsx2'} >
         <Input.TextArea rows={4} maxLength={8} />
       </Form.Item>
       <Form.Item

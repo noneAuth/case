@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
+    "useDefineForClassFields": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "importHelpers": true,
@@ -9,6 +10,8 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "baseUrl": "./",
+    "skipLibCheck": true,
+    "lib": ["ESNext", "DOM"],
     "strict": true,
     "paths": {
       "@/*": ["src/*"],
@@ -23,7 +26,7 @@
     "config/**/*",
     ".umirc.ts",
     "typings.d.ts"
-  ],
+, "_tests_", "jest.config.js", "setup-tests.js"  ],
   "exclude": [
     "node_modules",
     "lib",

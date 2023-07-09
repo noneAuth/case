@@ -20,7 +20,6 @@ export type playState = 'running' | 'paused';
 export interface stepsProps {
   num: number;
   tag: string;
-  playState: playState;
   y: number;
 }
 export default reactProps;

@@ -3,13 +3,10 @@ import { AppContext } from '@/utils/context';
 import { useContext, useEffect, useState } from 'react';
 import Steps from '../Steps';
 import styles from './index.less';
-import { playState } from '@/types';
 const TipsText = () => {
   const context = useContext(AppContext);
   const nodes = context?.data?.nodes?.length;
   const edges = context?.data?.edges?.length;
-  const [nodesPlayState, setNodesPlaystate] = useState<playState>('running');
-  const [edgesPlayState, setEdgesPlaystate] = useState<playState>('running');
   const [nodesY, setNodesY] = useState<number>(0);
   const [edgesY, setEdgesY] = useState<number>(0);
   useEffect(() => {
@@ -35,7 +32,6 @@ const TipsText = () => {
             <Steps
               num={nodes}
               tag="nodes"
-              playState={nodesPlayState}
               y={nodesY}
             />
           </span>
@@ -48,7 +44,6 @@ const TipsText = () => {
             <Steps
               num={edges}
               tag="edges"
-              playState={edgesPlayState}
               y={edgesY}
             />
           </span>
