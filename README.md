@@ -1,5 +1,8 @@
-# case
-some good case for work
-menu
-## menu
-### colorMagic
+# 学习案例合集
+
+持续更新学习与React结合相关的生态工具包和库
+
+## 菜单
+### /antV-G6
+
+用于学习AntV G6 图表的项目
