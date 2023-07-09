@@ -3,6 +3,7 @@ import {
   useState,
   forwardRef,
   useImperativeHandle,
+  useEffect,
 } from 'react';
 import G6 from '@antv/g6';
 import { chartProps } from '@/types';
@@ -19,6 +20,7 @@ const Chart = forwardRef(
     }: chartProps,
     ref,
   ) => {
+    const [plugins, setPlugins] = useState<any[]>([]);
     //  类型一
     G6.registerNode('jsx1', {
       jsx: (cfg: any) => `
@@ -152,7 +154,7 @@ const Chart = forwardRef(
       r: 200,
       showLabel: true,
     });
-    const [plugins, setPlugins] = useState<any[]>([]);
+
     const makeRelationData = (data: any) => {
       if (chartRef.current) {
         chartRef.current.destroy();
@@ -200,11 +202,14 @@ const Chart = forwardRef(
         chartRef.current.destroy();
         chartRef.current = null;
       }
-
+      const content = window.document.getElementById('content');
+      const size = {
+        width: content?.clientWidth || window?.innerWidth - 300,
+        height: content?.clientHeight || window?.innerHeight,
+      };
       chartRef.current = new G6.Graph({
         container: 'chart',
-        width: window.innerWidth - 300,
-        height: window.innerHeight,
+        ...size,
         groupByTypes: false,
         plugins,
         modes: {
@@ -260,7 +265,11 @@ const Chart = forwardRef(
     useLayoutEffect(() => {
       makeRelationData(data);
     }, [data, plugins]);
-
+    useEffect(() => {
+      window.onresize = () => {
+        makeRelationData(data);
+      };
+    }, []);
     return <div id="chart"></div>;
   },
 );

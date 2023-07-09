@@ -1,15 +1,25 @@
-# umi project
+# 用于学习AntdV G6各种图表的实际应用场景演练
 
-## Getting Started
+## 启动项目
 
-Install dependencies,
+### 安装依赖
 
 ```bash
-$ yarn
+$ yarn or npm i
 ```
 
-Start the dev server,
+### 本地启动项目
 
 ```bash
-$ yarn start
+$ yarn start or npm start
+```
+
+## 测试项目
+```bash
+$ npm run test
+```
+## 打包CI指令
+
+```bash
+$ npm run ci
 ```

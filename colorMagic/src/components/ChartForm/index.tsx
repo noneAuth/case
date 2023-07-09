@@ -8,15 +8,20 @@ const ChartForm: React.FC = () => {
   const context = useContext(AppContext);
   const form = useRef<any>(null);
   const [type, setType] = useState('');
+  const [group, setGroup] = useState('');
+  const isRoot = ['root'].includes(group);
+  const isType1 = type === 'jsx1';
+  const isType2 = type === 'jsx2';
+
   const getOriginNodeOptions = () => {
-    return [{ id: 'root', label: 'root' }, ...context?.data?.nodes].map(
-      (item: any) => {
-        if (context?.data?.nodes.length && item?.id === 'root') {
-          return { value: item?.id, label: item?.label, disabled: true };
-        }
-        return { value: item?.id, label: item?.label };
-      },
-    );
+    return [...context?.data?.nodes].map((item: any) => {
+      return { value: item?.id, label: item?.label };
+    });
+  };
+  const reset = () => {
+    form.current.resetFields();
+    setType('');
+    setGroup('');
   };
   const onFinish = (values: any) => {
     const id = uuid();
@@ -31,17 +36,19 @@ const ChartForm: React.FC = () => {
         status: values?.status,
         group: values?.group,
         color: '#2196f3',
+        parent: isRoot ? '' : values?.originNode,
         meta: {
           creatorName: values?.creatorName,
         },
       },
-      ['root'].includes(type)
+      isRoot
         ? false
         : {
             source: id,
             target: values?.originNode,
           },
     );
+    reset();
   };
   return (
     <Form
@@ -68,55 +75,58 @@ const ChartForm: React.FC = () => {
         <Input />
       </Form.Item>
       <Form.Item
-        label="类型"
-        name="type"
+        label="节点类型"
+        name="group"
         rules={[{ required: true, message: '请选择类型' }]}
+      >
+        <Select
+          onChange={(value: any) => {
+            setGroup(value);
+          }}
+          options={[
+            { value: 'root', label: '机房' },
+            { value: 'node', label: '机器' },
+          ]}
+        />
+      </Form.Item>
+      <Form.Item
+        label="聚类"
+        name="type"
+        rules={[{ required: !isRoot, message: '请选择聚类分组' }]}
       >
         <Select
           onChange={(e: any) => {
             setType(e);
           }}
           options={[
-            { value: 'jsx1', label: '机房' },
-            { value: 'jsx2', label: '机器' },
+            { value: 'jsx1', label: '聚类A' },
+            { value: 'jsx2', label: '聚类B' },
+            // { value: 'C', label: '聚类C' },
+            // { value: 'D', label: '聚类D' },
           ]}
         />
       </Form.Item>
-
-      <Form.Item label="cpu使用率" name="cpuUsage" hidden={type !== 'jsx1'}>
+      <Form.Item label="使用率" name="cpuUsage" hidden={!isType1}>
         <InputNumber max={100} min={1} step={1} />
       </Form.Item>
-      <Form.Item label="状态" name="status" hidden={type !== 'jsx1'}  >
+      <Form.Item label="状态" name="status" hidden={!isType1}>
         <Input />
       </Form.Item>
-      <Form.Item label="机器编码" name="metric" hidden={type !== 'jsx1'} >
+      <Form.Item label="编码" name="metric" hidden={!isType1}>
         <Input />
       </Form.Item>
-      <Form.Item label="创建者" name="creatorName" hidden={type !== 'jsx2'}>
+      <Form.Item label="创建者" name="creatorName" hidden={!isType2}>
         <Input />
       </Form.Item>
 
-      <Form.Item label="描述" name="description" hidden={type !== 'jsx2'} >
+      <Form.Item label="描述" name="description" hidden={!isType2}>
         <Input.TextArea rows={4} maxLength={8} />
-      </Form.Item>
-      <Form.Item
-        label="聚类分组"
-        name="group"
-        rules={[{ required: true, message: '请选择聚类分组' }]}
-      >
-        <Select
-          options={[
-            { value: 'A', label: '聚类A' },
-            { value: 'B', label: '聚类B' },
-            { value: 'C', label: '聚类C' },
-            { value: 'D', label: '聚类D' },
-          ]}
-        />
       </Form.Item>
       <Form.Item
         label="来源节点"
         name="originNode"
-        rules={[{ required: true, message: '请选择来源节点' }]}
+        hidden={isRoot}
+        rules={[{ required: !isRoot, message: '请选择来源节点' }]}
       >
         <Select placeholder="" allowClear options={getOriginNodeOptions()} />
       </Form.Item>

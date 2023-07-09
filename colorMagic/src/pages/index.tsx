@@ -2,12 +2,13 @@ import { useRef, useState } from 'react';
 import TipsText from '@/components/TipsText';
 import ChartForm from '@/components/ChartForm';
 import { AppContext } from '@/utils/context';
-import { Modal, Empty, Divider, Space, Button, Avatar } from 'antd';
+import { Modal, Empty, Divider, Space, Button, Avatar, Menu } from 'antd';
 import {
   ZoomInOutlined,
   InfoOutlined,
   PoweroffOutlined,
-  UserOutlined
+  UserOutlined,
+  DotChartOutlined,
 } from '@ant-design/icons';
 import styles from './index.less';
 import Chart from '@/components/Chart';
@@ -16,6 +17,7 @@ export default function IndexPage() {
   const contentRef = useRef(null);
   const cRef = useRef<any>(null);
   const chartRef = useRef<any>(null);
+  const [current, setCurrent] = useState('Graph');
   const [data, setData] = useState({
     // 点集
     nodes: [
@@ -58,6 +60,7 @@ export default function IndexPage() {
         meta: {
           creatorName: 'a_creatorName',
         },
+        parent: '二号机',
       },
       {
         id: '四号机',
@@ -72,6 +75,7 @@ export default function IndexPage() {
         meta: {
           creatorName: 'a_creatorName',
         },
+        parent: '二号机',
       },
       {
         id: '五号机',
@@ -86,6 +90,7 @@ export default function IndexPage() {
         meta: {
           creatorName: 'a_creatorName',
         },
+        parent: '二号机',
       },
       {
         id: '六号机',
@@ -100,6 +105,7 @@ export default function IndexPage() {
         meta: {
           creatorName: 'a_creatorName',
         },
+        parent: '二号机',
       },
       {
         id: '七号机',
@@ -114,6 +120,7 @@ export default function IndexPage() {
         meta: {
           creatorName: 'a_creatorName',
         },
+        parent: '二号机',
       },
       {
         id: '八号机',
@@ -128,6 +135,7 @@ export default function IndexPage() {
         meta: {
           creatorName: 'a_creatorName',
         },
+        parent: '二号机',
       },
       {
         id: '九号机',
@@ -144,6 +152,7 @@ export default function IndexPage() {
         meta: {
           creatorName: 'a_creatorName',
         },
+        parent: '二号机',
       },
       {
         id: '十号机',
@@ -160,6 +169,7 @@ export default function IndexPage() {
         meta: {
           creatorName: 'a_creatorName',
         },
+        parent: '一号机',
       },
       {
         id: '十一号机',
@@ -174,6 +184,7 @@ export default function IndexPage() {
         meta: {
           creatorName: 'a_creatorName',
         },
+        parent: '一号机',
       },
       {
         id: '十二号机',
@@ -188,6 +199,7 @@ export default function IndexPage() {
         meta: {
           creatorName: 'a_creatorName',
         },
+        parent: '一号机',
       },
     ],
     // 边集
@@ -234,6 +246,20 @@ export default function IndexPage() {
       },
     ],
   });
+  const menu = [
+    {
+      label: 'Graph',
+      key: 'Graph',
+      icon: <DotChartOutlined />,
+    },
+    {
+      label: 'TreeGraph',
+      key: 'TreeGraph',
+      icon: <DotChartOutlined />,
+      disabled: true,
+    },
+  ];
+  const onMenuClick = () => {};
   const onAdd = (node: object, edge: object) => {
     setData((pre: any) => {
       return {
@@ -245,8 +271,12 @@ export default function IndexPage() {
   const onDelete = (item: string | object) => {
     setData((pre: any) => {
       return {
-        nodes: pre.nodes.filter((it: any) => it.id !== item),
-        edges: pre.edges.filter((it: any) =>  ![it.source, it.target].includes(item)),
+        nodes: pre.nodes.filter(
+          (it: any) => it.id !== item && it?.parent !== item,
+        ),
+        edges: pre.edges.filter(
+          (it: any) => ![it.source, it.target].includes(item),
+        ),
       };
     });
   };
@@ -266,8 +296,17 @@ export default function IndexPage() {
             <Divider />
             <ChartForm />
           </div>
-          <div className={styles.content} ref={contentRef}>
+
+          <div className={styles.content} ref={contentRef} id="content">
             <div className={styles.tools}>
+              <div className={styles.chartType}>
+                <Menu
+                  onClick={onMenuClick}
+                  selectedKeys={[current]}
+                  mode="horizontal"
+                  items={menu}
+                />
+              </div>
               <Space split="">
                 <Button
                   type="link"
@@ -291,13 +330,14 @@ export default function IndexPage() {
                     cRef.current && cRef.current.reset();
                   }}
                 >
-                <PoweroffOutlined  style={{ fontSize: '24px' }} />
+                  <PoweroffOutlined style={{ fontSize: '24px' }} />
                 </Button>
                 <Button type="link">
                   <Avatar icon={<UserOutlined />} />
                 </Button>
               </Space>
             </div>
+
             {data?.nodes.length ? (
               <Chart
                 data={data}

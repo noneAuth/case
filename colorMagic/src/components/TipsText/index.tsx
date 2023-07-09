@@ -29,11 +29,7 @@ const TipsText = () => {
         <Space>
           <span>节点:</span>
           <span className={styles.num}>
-            <Steps
-              num={nodes}
-              tag="nodes"
-              y={nodesY}
-            />
+            <Steps num={nodes} tag="nodes" y={nodesY} />
           </span>
         </Space>
       </Descriptions.Item>
@@ -41,11 +37,7 @@ const TipsText = () => {
         <Space>
           <span>边:</span>
           <span className={styles.num}>
-            <Steps
-              num={edges}
-              tag="edges"
-              y={edgesY}
-            />
+            <Steps num={edges} tag="edges" y={edgesY} />
           </span>
         </Space>
       </Descriptions.Item>

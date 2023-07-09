@@ -2,7 +2,7 @@ import { stepsProps } from '@/types';
 import { useMemo } from 'react';
 import styles from './index.less';
 
-const Steps = ({ num, tag , y}: stepsProps) => {
+const Steps = ({ num, tag, y }: stepsProps) => {
   const list = useMemo(() => {
     let cache = [];
     let _num = num;
@@ -15,13 +15,19 @@ const Steps = ({ num, tag , y}: stepsProps) => {
       .map((item, index) => ({ ...item, index }));
   }, [num]);
   return (
-    <div className={styles.transformNode} style={{ transform: `translateY(-${y}px)`, transition: `all ${num / 5}s linear`}}>
+    <div
+      className={styles.transformNode}
+      style={{
+        transform: `translateY(-${y}px)`,
+        transition: `all ${num / 5}s linear`,
+      }}
+    >
       {list.map((item: any) => (
         <div
           className={styles.transformItem}
           id={`${tag + item.key}`}
           style={{
-            zIndex: item.index
+            zIndex: item.index,
           }}
           key={item.key}
         >
