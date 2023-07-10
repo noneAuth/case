@@ -10,9 +10,10 @@ const ChartForm: React.FC = () => {
   const [type, setType] = useState('');
   const [group, setGroup] = useState('');
   const isRoot = ['root'].includes(group);
-  const isEmpty = context?.data?.nodes?.lenth === 0;
+  const isEmpty = context?.data?.nodes?.length === 0;
   const isType1 = type === 'jsx1';
   const isType2 = type === 'jsx2';
+
 
   const getOriginNodeOptions = () => {
     return [...context?.data?.nodes].map((item: any) => {
@@ -93,8 +94,8 @@ const ChartForm: React.FC = () => {
       <Form.Item
         label="聚类"
         name="type"
-        rules={[{ required: !isRoot, message: '请选择聚类分组' }]}
-        hidden={isRoot}
+        rules={[{ required: !isRoot && !isEmpty, message: '请选择聚类分组' }]}
+        hidden={isRoot || isEmpty}
       >
         <Select
           onChange={(e: any) => {
@@ -108,27 +109,27 @@ const ChartForm: React.FC = () => {
           ]}
         />
       </Form.Item>
-      <Form.Item label="使用率" name="cpuUsage" hidden={!isType1}>
+      <Form.Item label="使用率" name="cpuUsage" hidden={!isType1 || isEmpty}>
         <InputNumber max={100} min={1} step={1} />
       </Form.Item>
-      <Form.Item label="状态" name="status" hidden={!isType1}>
+      <Form.Item label="状态" name="status" hidden={!isType1 || isEmpty}>
         <Input />
       </Form.Item>
-      <Form.Item label="编码" name="metric" hidden={!isType1}>
+      <Form.Item label="编码" name="metric" hidden={!isType1 || isEmpty}>
         <Input />
       </Form.Item>
-      <Form.Item label="创建者" name="creatorName" hidden={!isType2}>
+      <Form.Item label="创建者" name="creatorName" hidden={!isType2 || isEmpty}>
         <Input />
       </Form.Item>
 
-      <Form.Item label="描述" name="description" hidden={!isType2}>
+      <Form.Item label="描述" name="description" hidden={!isType2 || isEmpty}>
         <Input.TextArea rows={4} maxLength={8} />
       </Form.Item>
       <Form.Item
         label="来源节点"
         name="originNode"
         hidden={isRoot || isEmpty}
-        rules={[{ required: !isRoot || isEmpty, message: '请选择来源节点' }]}
+        rules={[{ required: !isRoot && !isEmpty, message: '请选择来源节点' }]}
       >
         <Select placeholder="" allowClear options={getOriginNodeOptions()} />
       </Form.Item>
