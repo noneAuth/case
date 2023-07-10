@@ -23,7 +23,6 @@ const Chart = forwardRef(
     const [plugins, setPlugins] = useState<any[]>([]);
     G6.registerNode('jsx3', {
       draw: (cfg: any, group) => {
-        //最外面的那层
         const shape = group.addShape('rect', {
           draggable: true,
           attrs: {
@@ -31,12 +30,11 @@ const Chart = forwardRef(
             y: 0,
             width: 125,
             height: 40,
-            fill: cfg.style.fill, //填充色
-            stroke: '', //边框
+            fill: cfg.style.fill,
+            stroke: '',
             radius: 8,
           },
         });
-        //里面的那层
         group.addShape('rect', {
           draggable: true,
           attrs: {
@@ -44,12 +42,11 @@ const Chart = forwardRef(
             y: 0,
             width: 120,
             height: 40,
-            fill: '#fff', //填充色
-            stroke: '#2196f3', //边框
+            fill: '#fff',
+            stroke: '#2196f3',
             radius: 6,
           },
         });
-        //文字
         group.addShape('text', {
           attrs: {
             textBaseline: 'middle',
@@ -72,8 +69,8 @@ const Chart = forwardRef(
             y: 0,
             width: 100,
             height: 100,
-            fill: 'rgba(24, 144, 255, 0.15)', //填充色
-            stroke: '', //边框
+            fill: 'rgba(24, 144, 255, 0.15)',
+            stroke: '',
             radius: 6,
           },
         });
@@ -84,8 +81,8 @@ const Chart = forwardRef(
             y: 0,
             width: 100,
             height: 20,
-            fill: '#2196f3', //填充色
-            stroke: '', //边框
+            fill: '#2196f3',
+            stroke: '',
             radius: [6, 6, 0, 0],
           },
         });
@@ -135,7 +132,7 @@ const Chart = forwardRef(
         group.addShape('text', {
           draggable: true,
           attrs: {
-            x:  cfg.cpuUsage / 100 * 64,
+            x: (cfg.cpuUsage / 100) * 64,
             y: 80,
             width: 84,
             height: 20,
@@ -155,7 +152,6 @@ const Chart = forwardRef(
             height: 10,
             fill: '#fff',
             stroke: '',
-            // radius: 4,
           },
         });
         group.addShape('rect', {
@@ -163,11 +159,10 @@ const Chart = forwardRef(
           attrs: {
             x: 7,
             y: 82,
-            width: cfg.cpuUsage / 100 * 84,
+            width: (cfg.cpuUsage / 100) * 84,
             height: 10,
             fill: '#1890ff',
             stroke: '',
-            // radius: 4,
           },
         });
         return shape;
@@ -183,8 +178,8 @@ const Chart = forwardRef(
             y: 0,
             width: 150,
             height: 76,
-            fill: '#fff', //填充色
-            stroke: cfg.color, //边框
+            fill: '#fff',
+            stroke: cfg.color,
             radius: 6,
           },
         });
@@ -307,20 +302,18 @@ const Chart = forwardRef(
       }
 
       const graphWidth = chartRef?.current?.scrollWidth;
-      // const graphHeight = chartRef?.current?.scrollHeight || 1200;
-      let origin = [graphWidth / 2, 100];
-      let row = 150,
-        clo = 180;
+      let origin = [graphWidth / 2, 50];
+      let row = 75,
+        clo = 90;
       let combos = data.nodes;
       let row_clo = Math.floor(Math.sqrt(combos.length));
       for (let i = 0; i < combos.length; i++) {
         let rowindex = Math.floor(i / row_clo) + 1;
         let cloindex = (i % row_clo) + 1;
-        // 分组定位
         combos[i].x = origin[0] + clo * cloindex;
         combos[i].y = origin[1] + row * rowindex;
         if (i % 2 === 1) {
-          combos[i].y += 40;
+          combos[i].y += 20;
         }
       }
 
