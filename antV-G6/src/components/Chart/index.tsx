@@ -21,109 +21,252 @@ const Chart = forwardRef(
     ref,
   ) => {
     const [plugins, setPlugins] = useState<any[]>([]);
-    //  类型一
-    G6.registerNode('jsx1', {
-      jsx: (cfg: any) =>
-   `
-  <rect style={{
-    width: 100,
-    height: 100,
-    fill: 'rgba(24, 144, 255, 0.15)',
-    radius: 6
-  }}>
-  <rect
-  style={{
-    width: 100,
-    height: 20,
-    fill: '#1890ff',
-    radius: [6, 6, 0, 0],
-  }}
-  >
-   <text style={{
-    fill: '#fff',
-    textAlign: 'center',
-    textBaseLine: 'middle',
-    marginTop: 2,
-    marginLeft: 50,
-    fontWeight: 'bold'
-   }}>${cfg?.label}</text>
-  </rect>
-  <rect style={{
-    marginTop: 16
-  }}>
-  <text style={{
-    marginLeft: 4,
-    fill: 'red'
-   }}>
-   ${cfg.status}
-   </text>
-  <text style={{
-    marginLeft: 4
-   }}>
-   ${cfg.metric}
-   </text>
-   <text style={{
-    marginLeft: ${(cfg.cpuUsage * 60) / 100},
-    marginTop: 10,
-    fill: '#1890ff'
-   }}>
-   ${cfg.cpuUsage + '%'}
-   </text>
-   <rect style={{marginLeft: 6,width: 84, height: 10, radius: 4, fill: '#fff', stroke: '#1890ff'}}>
-   <rect style={{marginLeft: 6,width: ${
-     (cfg.cpuUsage / 100) * 84
-   }, height: 10, fill: '#1890ff', radius: 4}}></rect>
- </rect>
-  </rect>
-  </rect>`,
+    G6.registerNode('jsx3', {
+      draw: (cfg: any, group) => {
+        //最外面的那层
+        const shape = group.addShape('rect', {
+          draggable: true,
+          attrs: {
+            x: 0,
+            y: 0,
+            width: 125,
+            height: 40,
+            fill: cfg.style.fill, //填充色
+            stroke: '', //边框
+            radius: 8,
+          },
+        });
+        //里面的那层
+        group.addShape('rect', {
+          draggable: true,
+          attrs: {
+            x: 5,
+            y: 0,
+            width: 120,
+            height: 40,
+            fill: '#fff', //填充色
+            stroke: '#2196f3', //边框
+            radius: 6,
+          },
+        });
+        //文字
+        group.addShape('text', {
+          attrs: {
+            textBaseline: 'middle',
+            y: 20,
+            x: 60,
+            textAlign: 'center',
+            text: cfg.label,
+            fill: '#000',
+          },
+        });
+        return shape;
+      },
     });
-    //  类型二
+    G6.registerNode('jsx1', {
+      draw(cfg: any, group) {
+        const shape = group.addShape('rect', {
+          draggable: true,
+          attrs: {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+            fill: 'rgba(24, 144, 255, 0.15)', //填充色
+            stroke: '', //边框
+            radius: 6,
+          },
+        });
+        group.addShape('rect', {
+          draggable: true,
+          attrs: {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 20,
+            fill: '#2196f3', //填充色
+            stroke: '', //边框
+            radius: [6, 6, 0, 0],
+          },
+        });
+        group.addShape('text', {
+          draggable: true,
+          attrs: {
+            x: 50,
+            y: 16,
+            width: 100,
+            height: 20,
+            fill: '#fff',
+            stroke: '',
+            textAlign: 'center',
+            text: cfg.label,
+            fontWeight: 'bold',
+            textBaseLine: 'middle',
+          },
+        });
+        group.addShape('text', {
+          draggable: true,
+          attrs: {
+            x: 12,
+            y: 40,
+            width: 100,
+            height: 20,
+            fill: 'red',
+            stroke: '',
+            text: cfg.status,
+            fontWeight: 'bold',
+            textBaseLine: 'middle',
+          },
+        });
+        group.addShape('text', {
+          draggable: true,
+          attrs: {
+            x: 12,
+            y: 60,
+            width: 100,
+            height: 20,
+            fill: '#000',
+            stroke: '',
+            text: cfg.metric,
+            fontWeight: 'bold',
+            textBaseLine: 'middle',
+          },
+        });
+        group.addShape('text', {
+          draggable: true,
+          attrs: {
+            x: (cfg.cpuUsage / 100) * cfg.cpuUsage,
+            y: 80,
+            width: 100,
+            height: 20,
+            fill: '#1890ff',
+            stroke: '',
+            text: cfg.cpuUsage + '%',
+            fontWeight: 'bold',
+            textBaseLine: 'middle',
+          },
+        });
+        group.addShape('rect', {
+          draggable: true,
+          attrs: {
+            x: 7,
+            y: 82,
+            width: 84,
+            height: 10,
+            fill: '#fff',
+            stroke: '',
+            radius: 4,
+          },
+        });
+        group.addShape('rect', {
+          draggable: true,
+          attrs: {
+            x: 7,
+            y: 82,
+            width: (cfg.cpuUsage / 100) * 84,
+            height: 10,
+            fill: '#1890ff',
+            stroke: '',
+            radius: 4,
+          },
+        });
+        return shape;
+      },
+    });
+
     G6.registerNode('jsx2', {
-      jsx: (cfg: any) => `<rect style={{
-    width: 150,
-    height: 75,
-    stroke: ${cfg.color},
-    fill: '#fff',
-    radius: 6,
-  }}>
-   <rect style={{
-    radius: [6,6,0,0],
-    width: 150,
-    height: 20,
-    fill: ${cfg.color},
-   }}>
-    <text style={{
-      fill: '#fff',
-      textAlign: 'center',
-      textBaseLine: 'middle',
-      marginTop: 14,
-      marginLeft: 60,
-      fontWeight: 'bold'
-    }}>
-     ${cfg.label}
-    </text>
-   </rect>
-   <rect>
-    <text style={{marginTop: 2, marginLeft: 8}}> 描述：${cfg.description}</text>
-    <text style={{marginTop: 2, marginLeft: 8}}> 创建者：${cfg.meta.creatorName}</text>
-    <circle style={{
-      r: 10,
-      stroke: ${cfg.color},
-    fill: '#fff',
-    marginLeft: 76,
-    marginTop: 22,
-    cursor: 'pointer'
-  }}>
-  <image name="loading" style={{
-    img: 'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
-    width: 12,
-    height: 12,
-    marginLeft: 70,
-    marginTop: -5,
-  }} />
-  </circle>
-   </rect>
-  </rect>`,
+      draw(cfg: any, group) {
+        const shape = group.addShape('rect', {
+          draggable: true,
+          attrs: {
+            x: 0,
+            y: 0,
+            width: 150,
+            height: 76,
+            fill: '#fff', //填充色
+            stroke: cfg.color, //边框
+            radius: 6,
+          },
+        });
+        group.addShape('rect', {
+          draggable: true,
+          attrs: {
+            x: 0,
+            y: 0,
+            width: 150,
+            height: 20,
+            fill: cfg.color,
+            stroke: '',
+            radius: [6, 6, 0, 0],
+          },
+        });
+        group.addShape('text', {
+          draggable: true,
+          attrs: {
+            x: 75,
+            y: 16,
+            width: 100,
+            height: 20,
+            fill: '#fff',
+            textAlign: 'center',
+            stroke: '',
+            text: cfg.label,
+            fontWeight: 'bold',
+          },
+        });
+        group.addShape('text', {
+          draggable: true,
+          attrs: {
+            x: 12,
+            y: 40,
+            width: 100,
+            height: 20,
+            fill: '#000',
+            stroke: '',
+            text: '描述：' + cfg.description,
+            fontWeight: 'bold',
+            textBaseLine: 'middle',
+          },
+        });
+        group.addShape('text', {
+          draggable: true,
+          attrs: {
+            x: 12,
+            y: 56,
+            width: 100,
+            height: 20,
+            fill: '#000',
+            stroke: '',
+            text: '创建者：' + cfg?.meta?.creatorName,
+            fontWeight: 'bold',
+            textBaseLine: 'middle',
+          },
+        });
+        group.addShape('circle', {
+          draggable: true,
+          attrs: {
+            x: 75,
+            y: 75,
+            fill: '#fff',
+            r: 10,
+            cursor: 'poiner',
+            stroke: cfg?.color,
+          },
+        });
+        group.addShape('image', {
+          draggable: true,
+          name: 'loading',
+          attrs: {
+            x: 69,
+            y: 69,
+            width: 12,
+            height: 12,
+            img: 'https://gw.alipayobjects.com/zos/antfincdn/FLrTNDvlna/antv.png',
+            cursor: 'pointer',
+          },
+        });
+        return shape;
+      },
       afterDraw: (cfg: any, group: any) => {
         const imgOrigin = group.find((el: any) => el.get('name') === 'loading');
         imgOrigin.animate(
@@ -139,27 +282,7 @@ const Chart = forwardRef(
         );
       },
     });
-    G6.registerNode('jsx3', {
-      jsx: (cfg: any) =>  `
-      <rect style={{
-        width: 100,
-        height: 36,
-        fill: '#1890ff',
-        radius: 6
-      }}>
-      <text style={{
-        fill: '#fff',
-        textAlign: 'center',
-        textBaseLine: 'middle',
-        marginTop: 24,
-        marginLeft: 24,
-        fontWeight: 'bold'
-      }}>
-       ${cfg.label}
-      </text>
-      </rect>`,
 
-    });
     const tooltip = new G6.Tooltip({
       offsetX: 10,
       offsetY: 10,
@@ -225,6 +348,7 @@ const Chart = forwardRef(
         chartRef.current = null;
       }
       const content = window.document.getElementById('content');
+
       const size = {
         width: content?.clientWidth || window?.innerWidth - 300,
         height: content?.clientHeight || window?.innerHeight,
@@ -235,7 +359,7 @@ const Chart = forwardRef(
         groupByTypes: false,
         plugins,
         modes: {
-          default: ['drag-canvas'],
+          default: ['drag-canvas', 'drag-node'],
         },
         edgeStateStyles: {
           hover: {

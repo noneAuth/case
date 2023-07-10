@@ -23,8 +23,8 @@ export default function IndexPage() {
     nodes: [
       {
         id: '一号机',
-        // type: 'xml-card',
-        // type: 'circle',
+        // type: 'jsx1',
+        // type: 'test',
         type: 'jsx3',
         metric: 'CPU usage',
         label: '一号机房',
