@@ -135,9 +135,9 @@ const Chart = forwardRef(
         group.addShape('text', {
           draggable: true,
           attrs: {
-            x: (cfg.cpuUsage / 100) * cfg.cpuUsage + 10,
+            x:  cfg.cpuUsage / 100 * 84,
             y: 80,
-            width: 100,
+            width: 84,
             height: 20,
             fill: '#1890ff',
             stroke: '',
@@ -155,7 +155,7 @@ const Chart = forwardRef(
             height: 10,
             fill: '#fff',
             stroke: '',
-            radius: 4,
+            // radius: 4,
           },
         });
         group.addShape('rect', {
@@ -163,11 +163,11 @@ const Chart = forwardRef(
           attrs: {
             x: 7,
             y: 82,
-            width: (cfg.cpuUsage / 100) * 84,
+            width: cfg.cpuUsage / 100 * 84,
             height: 10,
             fill: '#1890ff',
             stroke: '',
-            radius: 4,
+            // radius: 4,
           },
         });
         return shape;
