@@ -135,7 +135,7 @@ const Chart = forwardRef(
         group.addShape('text', {
           draggable: true,
           attrs: {
-            x: (cfg.cpuUsage / 100) * cfg.cpuUsage,
+            x: (cfg.cpuUsage / 100) * cfg.cpuUsage + 10,
             y: 80,
             width: 100,
             height: 20,
